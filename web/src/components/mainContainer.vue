@@ -1,9 +1,12 @@
 <template>
   <div class='main-container'>
-    <div class="header">
+    <!-- <div class="header">
       🍣寿司聊天室
+    </div> -->
+    <!-- <img class="bg-img" src="../assets/bg.jpeg" alt=""> -->
+    <div class="chat">
+      <slot></slot>
     </div>
-    <img class="bg-img" src="../assets/bg.jpeg" alt="">
   </div>
 </template>
 
@@ -17,11 +20,23 @@ export default {
 </script>
 <style scoped lang="css">
 .main-container{
+  display: flex;
   width: 100%;
   height: 100%;
   position: relative;
+  background-color: pink;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.header{
+.chat{
+  width: 80%;
+  height: 80%;
+  background-color: #fff;
+  border-radius: 20px;
+  display: flex;
+}
+/* .header{
   position: fixed;
   z-index: 999;
   top: 0;
@@ -34,5 +49,5 @@ export default {
     left: 0;
     bottom: 0;
     object-fit: cover;
-  }
+  } */
 </style>
