@@ -1,11 +1,27 @@
 <template>
   <div class='chat'>
     <mainContainer>
-      <NavHeader :curUser="curUser"/>
-      <div class="main">
-        <Contacts :userList="userList" :curUserId="curUser.id"></Contacts>
-        <ChatContainer :chatData="chatData" @send="handleSend"></ChatContainer>
-      </div>
+      <Contacts 
+        :curUser="curUser" 
+        :userList="userList" 
+        :curUserId="curUser.id"
+        :chatUser="chatUser"
+        @click-user="handleClickAvatar"
+        ></Contacts>
+      <!-- 群聊 -->
+      <ChatContainer
+      v-if="chatType == 'qunliao'"
+      :chatData="chatData" 
+      @send="handleSend" 
+      @click-user="handleClickAvatar"
+      ></ChatContainer>
+      <!-- 私聊 -->
+      <Chat
+      v-else
+      :chatData="userChatData.get(chatUserId) ?? []"
+      :chatUser="chatUser"
+      @send="handleSendUser" 
+      ></Chat>
     </mainContainer>
     <JoinModel @join="handleJoin"/>
   </div>
@@ -16,7 +32,7 @@ import mainContainer from '../../components/mainContainer.vue';
 import Contacts from '../../components/leftContacts.vue'
 import ChatContainer from '../../components/ChatContainer.vue'
 import JoinModel from '../../components/joinModel.vue'
-import NavHeader from '../../components/NavHeader.vue'
+import Chat from '../../components/chat.vue'
 import init from './init'
 export default {
   name: 'ChatItem',
@@ -25,7 +41,7 @@ export default {
     Contacts,
     ChatContainer,
     JoinModel,
-    NavHeader
+    Chat
   },
   setup() {
     return { ...init()};

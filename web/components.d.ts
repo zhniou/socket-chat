@@ -7,12 +7,14 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    Chat: typeof import('./src/components/chat.vue')['default']
     ChatContainer: typeof import('./src/components/chatContainer.vue')['default']
     JoinModel: typeof import('./src/components/joinModel.vue')['default']
     LeftContacts: typeof import('./src/components/leftContacts.vue')['default']
     MainContainer: typeof import('./src/components/mainContainer.vue')['default']
     NAvatar: typeof import('naive-ui')['NAvatar']
     NavHeader: typeof import('./src/components/NavHeader.vue')['default']
+    NBadge: typeof import('naive-ui')['NBadge']
     NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
     NIcon: typeof import('naive-ui')['NIcon']

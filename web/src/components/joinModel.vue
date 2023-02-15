@@ -34,7 +34,6 @@ const emits = defineEmits({
   // 校验 join 事件
   join: (e: JoinEvent) => {
     const { name, avatar } = e
-    
     if (name && avatar) {
       return true
     } else {
@@ -46,6 +45,7 @@ const emits = defineEmits({
 const name = ref('')
 const isOpen = ref(true)
 const handleJoin = () => {
+  if(name.value == '') return
   // 随机头像
   const randomIndex = Math.floor(Math.random() * aList.length)
   const avatar = aList[randomIndex]
