@@ -9,19 +9,19 @@
         @click-user="handleClickAvatar"
         ></Contacts>
       <!-- 群聊 -->
-      <ChatContainer
+      <publicChat
       v-if="chatType == 'qunliao'"
       :chatData="chatData" 
       @send="handleSend" 
       @click-user="handleClickAvatar"
-      ></ChatContainer>
+      ></publicChat>
       <!-- 私聊 -->
-      <Chat
+      <personalChat
       v-else
       :chatData="userChatData.get(chatUserId) ?? []"
       :chatUser="chatUser"
       @send="handleSendUser" 
-      ></Chat>
+      ></personalChat>
     </mainContainer>
     <JoinModel @join="handleJoin"/>
   </div>
@@ -30,18 +30,18 @@
 <script lang='ts'>
 import mainContainer from '../../components/mainContainer.vue';
 import Contacts from '../../components/leftContacts.vue'
-import ChatContainer from '../../components/ChatContainer.vue'
+import publicChat from '../../components/publicChat.vue'
 import JoinModel from '../../components/joinModel.vue'
-import Chat from '../../components/chat.vue'
+import personalChat from '../../components/personalChat.vue'
 import init from './init'
 export default {
   name: 'ChatItem',
   components:{
     mainContainer,
     Contacts,
-    ChatContainer,
+    publicChat,
     JoinModel,
-    Chat
+    personalChat
   },
   setup() {
     return { ...init()};

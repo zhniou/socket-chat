@@ -8,7 +8,7 @@
       <div  @click="clickUserAvatar('quliao')" class="user"> {{ `甜粥铺 (${userList.size})` }}</div>
     </div>
     <div @click="clickUserAvatar(item)" :class="['contacts-item ']"  v-for="item in users" key="item.id">
-      <n-badge dot :show="item.new && item.new !== undefined">
+      <n-badge dot :show="initBadge(item)">
         <n-avatar  round :size="30" class="avatar" :src="item.avatar" />
       </n-badge>
       <div class="user">{{ item.name }}</div>
@@ -28,17 +28,10 @@ export default {
     },
     chatUser:{}
   },
-  setup(props,context) {
-    interface User {
-      id: string
-      avatar: string
-      name: string
-      new: boolean
-    }
-
-    
-  const users = computed<User[]>(() => {
-    const list: User[] = []
+  setup(props,context) {    
+    // 获取当前在线用户
+  const users = computed (() => {
+    const list = []
     if (props.userList.size === 0) return []
     props.userList.forEach((value, key) => {
       if (key !== props.curUser.id) {
@@ -52,8 +45,8 @@ export default {
     })
     return list
   })
-    
 
+  // 点击用户切换私聊
     const clickUserAvatar = (e:any) => {
       context.emit('click-user', {
         name: e.name,
@@ -62,10 +55,18 @@ export default {
       })
     }
 
+    // 是否显示消息提示图标
+    const initBadge = (val) => {
+      if(val.new == undefined){
+        return false
+      }
+      return val.new
+    }
 
     return {
       users,
-      clickUserAvatar
+      clickUserAvatar,
+      initBadge
     };
   },
 };
@@ -89,7 +90,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* background-color: rgba(0, 0, 0, 0.2); */
   color: #fff;
   font-size: 18px;
   font-weight: 500;

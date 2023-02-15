@@ -20,6 +20,8 @@ declare module '@vue/runtime-core' {
     NIcon: typeof import('naive-ui')['NIcon']
     NInput: typeof import('naive-ui')['NInput']
     NModal: typeof import('naive-ui')['NModal']
+    PersonalChat: typeof import('./src/components/personalChat.vue')['default']
+    PublicChat: typeof import('./src/components/publicChat.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

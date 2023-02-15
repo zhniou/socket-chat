@@ -4,10 +4,6 @@ export default () => {
   // 创建 socket 实例
   const socket = io('ws://localhost:5433')
 
-  const handleJoin = (e:any) => {
-    socket.emit('join', Object.assign({}, e))
-  }
-
   interface ChatDataItem {
     type: 'your' | 'me' | 'tips'
     id: string
@@ -17,28 +13,25 @@ export default () => {
     userId?: string
   }
 
-  const curUser = reactive({
+  // 监听 join
+  const handleJoin = (e:any) => {
+    socket.emit('join', Object.assign({}, e))
+  }
+
+  const curUser = reactive({ //当前登陆的用户信息
     name: '',
     avatar: '',
     id: '',
   })
-
-  interface User {
-    name: string
-    avatar: string
-    id: string
-    new: boolean
-  }
-
-  const chatData = ref<ChatDataItem[]>([])
-  const userList = ref(new Map())
-
   // 获取当前加入群聊信息
   socket.on('joined', (e: typeof curUser) => {
     curUser.avatar = e.avatar
     curUser.id = e.id
     curUser.name = e.name
   })
+
+  const userList = ref(new Map()) //在线用户
+  const chatData = ref<ChatDataItem[]>([]) //群聊的信息
 
   // 监听 welcome
   socket.on('welcome', ({ name, uList }) => {
@@ -55,45 +48,45 @@ export default () => {
   })
 
 
-// 群聊发送消息
-const handleSend = (v: string) => {
-  const obj = {
-    id: Math.random().toString().split('.')[1].slice(0, 10),
-    name: curUser.name,
-    avatar: curUser.avatar,
-    content: v,
-    userId: curUser.id,
+  // 群聊发送消息
+  const handleSend = (v: string) => {
+    const obj = {
+      id: Math.random().toString().split('.')[1].slice(0, 10),
+      name: curUser.name,
+      avatar: curUser.avatar,
+      content: v,
+      userId: curUser.id,
+    }
+    // 在 chatData 中新增一条数据，表示自己发送的
+    const type: 'me' = 'me'
+    chatData.value.push(Object.assign({}, { type }, obj))
+    // 发出send事件，将消息发送出去
+    socket.emit('send', obj)
   }
-  // 在 chatData 中新增一条数据，表示自己发送的
-  const type: 'me' = 'me'
-  chatData.value.push(Object.assign({}, { type }, obj))
-  // 发出send事件，将消息发送出去
-  socket.emit('send', obj)
-}
 
-// 监听消息的广播
-socket.on('message', (e: any) => {
-  const msg = Object.assign({}, e, { type: 'your' }) as ChatDataItem
-  chatData.value.push(msg)
-})
-
-
-// 监听退出
-socket.on('quit', (id: string) => {
-  const user = userList.value.get(id)
-  userList.value.delete(id)
-  chatData.value.push({
-    type: 'tips',
-    id: Math.random().toString().split('.')[1].slice(0, 10),
-    content: user?.name + '退出群聊~',
+  // 监听消息的广播
+  socket.on('message', (e: any) => {
+    const msg = Object.assign({}, e, { type: 'your' }) as ChatDataItem
+    chatData.value.push(msg)
   })
-})
 
 
-const userChatData = ref<Map<string, ChatDataItem[]>>(new Map())
-const currentChatUser= ref(null)
-// 私聊发送消息
-const handleSendUser = (v: string) => {
+  // 监听退出
+  socket.on('quit', (id: string) => {
+    const user = userList.value.get(id)
+    userList.value.delete(id)
+    chatData.value.push({
+      type: 'tips',
+      id: Math.random().toString().split('.')[1].slice(0, 10),
+      content: user?.name + '退出群聊~',
+    })
+  })
+
+
+  const userChatData = ref(new Map())
+  const currentChatUser= ref(null)
+  // 私聊发送消息
+  const handleSendUser = (v: string) => {
   const obj = {
     id: Math.random().toString().split('.')[1].slice(0, 10),
     name: curUser.name,
@@ -115,28 +108,28 @@ const handleSendUser = (v: string) => {
   // userMessage.value = ''
   // 发出send事件，将消息发送出去
   socket.emit('send-user', obj)
-}
-
-// 私聊监听接受消息
-socket.on('message-user', (e: any) => {
-  const msg = Object.assign({}, e, { type: 'your' }) as ChatDataItem
-  const sendId = e.userId
-  if (!userChatData.value.has(sendId)) {
-    userChatData.value.set(sendId, [])
   }
-  const chatData = userChatData.value.get(sendId) ?? []
-  chatData.push(msg)
-  const u = userList.value.get(sendId)
-  if (u) {
-    u.new = true
-  }
-})
+  
+  // 私聊监听接受消息
+  socket.on('message-user', (e: any) => {
+    const msg = Object.assign({}, e, { type: 'your' }) as ChatDataItem
+    const sendId = e.userId
+    if (!userChatData.value.has(sendId)) {
+      userChatData.value.set(sendId, [])
+    }
+    const chatData = userChatData.value.get(sendId) ?? []
+    chatData.push(msg)
+    const u = userList.value.get(sendId)
+    if (u) {
+      u.new = true
+    }
+  })
 
 
-const chatUserId = ref('')
-const chatUser = ref(null)
-const chatType = ref('qunliao')
-const handleClickAvatar = (e:any) => {
+  const chatUserId = ref('') //私聊用户id
+  const chatUser = ref(null) //私聊用户信息
+  const chatType = ref('qunliao') //聊天类型
+  const handleClickAvatar = (e:any) => {
   if (e.id === curUser.id) {
     return
   }
@@ -152,7 +145,7 @@ const handleClickAvatar = (e:any) => {
     u.new = false
   }
   
-}
+  }
 
 
   return{

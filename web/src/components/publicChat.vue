@@ -1,15 +1,13 @@
 <template>
   <div class='chat-area'>
-    <div class="chat-info">
-      <n-avatar round :size="45" class="avatar" :src="chatUser.avatar" />
-      <span>{{ chatUser.name }}</span>
-    </div>
+    <div class="chat-info">甜粥铺群聊</div>
     <!-- 信息展示区域 -->
     <template v-for="(item, index) in chatData" class="area">
       <div class="chat-content">
-        <div>
+        <div v-if="item.type == 'tips'" class="tips">{{ item.content }}</div>
+        <div v-else>
           <div :class="item.type === 'your' ? 'your' : 'me'">
-            <n-avatar :size="45" class="avatar" :src="item.avatar" />
+            <n-avatar @click="clickUserAvatar(item)" :size="45" class="avatar" :src="item.avatar" />
             <span class="text">{{ item.content }}</span>
           </div>
         </div>
@@ -31,19 +29,29 @@ export default {
   name: 'ChatContainer',
   props: {
     chatData: {},
-    chatUser:{}
   },
   setup(props, context) {
     const value = ref('')
+    // 发送群聊消息
     const handleSend = () => {
       if (value.value == '') return
       context.emit('send', value.value)
       value.value = ''
-    }    
+    }
+
+    // 点击用户头像到私聊
+    const clickUserAvatar = (e:any) => {
+      context.emit('click-user', {
+        name: e.name,
+        id: e.userId,
+        avatar: e.avatar,
+      })
+    }
 
     return {
       value,
       handleSend,
+      clickUserAvatar
     };
   },
 };
@@ -54,11 +62,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.chat-info span{
   font-size: 20px;
   color: #fff;
-  margin-left: 10px;
 }
 
 .chat-area {
