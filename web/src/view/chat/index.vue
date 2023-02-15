@@ -1,8 +1,11 @@
 <template>
   <div class='chat'>
     <mainContainer>
-      <Contacts></Contacts>
-      <ChatContainer></ChatContainer>
+      <NavHeader :curUser="curUser"/>
+      <div class="main">
+        <Contacts :userList="userList" :curUserId="curUser.id"></Contacts>
+        <ChatContainer :chatData="chatData" @send="handleSend"></ChatContainer>
+      </div>
     </mainContainer>
     <JoinModel @join="handleJoin"/>
   </div>
@@ -12,7 +15,8 @@
 import mainContainer from '../../components/mainContainer.vue';
 import Contacts from '../../components/leftContacts.vue'
 import ChatContainer from '../../components/ChatContainer.vue'
-import JoinModel,{ JoinEvent }  from '../../components/joinModel.vue'
+import JoinModel from '../../components/joinModel.vue'
+import NavHeader from '../../components/NavHeader.vue'
 import init from './init'
 export default {
   name: 'ChatItem',
@@ -20,7 +24,8 @@ export default {
     mainContainer,
     Contacts,
     ChatContainer,
-    JoinModel
+    JoinModel,
+    NavHeader
   },
   setup() {
     return { ...init()};
@@ -28,6 +33,12 @@ export default {
 };
 </script>
 <style scoped lang='css'>
+.main{
+  display: flex;
+  width: 100%;
+  height: 660px;
+  box-sizing: border-box;
+}
 .chat{
   width: 100%;
   height: 100%;
