@@ -77,7 +77,6 @@ export default {
   height: 100%;
   border-radius: 0 0 0 20px;
   overflow: hidden;
-  background-color: transparent;
   background-color: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(6px);
   box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;

@@ -28,11 +28,11 @@
 </template>
 
 <script lang='ts'>
-import mainContainer from '../../components/mainContainer.vue';
-import Contacts from '../../components/leftContacts.vue'
-import publicChat from '../../components/publicChat.vue'
-import JoinModel from '../../components/joinModel.vue'
-import personalChat from '../../components/personalChat.vue'
+import mainContainer from '../components/mainContainer.vue';
+import Contacts from '../components/leftContacts.vue'
+import publicChat from '../components/publicChat.vue'
+import JoinModel from '../components/joinModel.vue'
+import personalChat from '../components/personalChat.vue'
 import init from './init'
 export default {
   name: 'ChatItem',

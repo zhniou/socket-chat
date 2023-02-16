@@ -72,11 +72,6 @@ export default {
   box-sizing: border-box;
   overflow: scroll;
 }
-
-.area {
-  overflow: scroll;
-}
-
 .input-area {
   display: flex;
   align-items: center;

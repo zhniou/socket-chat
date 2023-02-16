@@ -16,6 +16,7 @@ export default () => {
   // 监听 join
   const handleJoin = (e:any) => {
     socket.emit('join', Object.assign({}, e))
+    // console.log('join',e);//获取用户name和头像
   }
 
   const curUser = reactive({ //当前登陆的用户信息
@@ -35,6 +36,8 @@ export default () => {
 
   // 监听 welcome
   socket.on('welcome', ({ name, uList }) => {
+    console.log(name, uList,'name, uList');
+    
   uList.forEach((item: any[]) => {
     const [id, value] = item
     userList.value.set(id, value)
