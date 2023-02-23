@@ -1,5 +1,17 @@
 # socket-chat
-Vue3+Node实现一个WebSocket即时通讯聊天室
+Vue3+Vite+Node实现一个WebSocket即时通讯聊天室
+
+服务端：
+
+*   socket.io\@4.5.1
+
+客户端
+
+*   vue\@3.2
+
+*   vite\@4.1
+
+*   naive-ui
 
 <img width="1365" alt="image" src="https://user-images.githubusercontent.com/91867363/220872374-24f4416c-1bf4-4b5a-af28-141aeccc9fc6.png">
 <img width="1363" alt="image" src="https://user-images.githubusercontent.com/91867363/220872580-87c79bff-56e1-4101-addb-012466c92769.png">
