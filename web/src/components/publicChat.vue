@@ -74,7 +74,6 @@ export default {
   position: relative;
   padding: 0 30px 80px;
   box-sizing: border-box;
-  overflow: scroll;
 }
 
 .area {
